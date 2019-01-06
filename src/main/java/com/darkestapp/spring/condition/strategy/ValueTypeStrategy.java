@@ -1,5 +1,13 @@
 package com.darkestapp.spring.condition.strategy;
 
+import com.darkestapp.spring.condition.SpringConditionException;
+import com.darkestapp.spring.condition.annotation.Conditional;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * Represents the strategy to use to obtain the value to check.
  *
@@ -15,4 +23,16 @@ public interface ValueTypeStrategy {
      * @return the value to check.
      */
     String getValue();
+
+    default Map<String, Object> getAttributes(AnnotatedTypeMetadata annotatedTypeMetadata) {
+        String annotationCanonicalType = Conditional.class.getCanonicalName();
+        if(annotatedTypeMetadata.isAnnotated(annotationCanonicalType)) {
+            return Objects
+                    .requireNonNull(
+                            annotatedTypeMetadata.getAnnotationAttributes(
+                                    annotationCanonicalType)
+                    );
+        }
+        return Collections.emptyMap();
+    }
 }
