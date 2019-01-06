@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import static com.darkestapp.spring.condition.annotation.Conditional.ValueType.STRING;
+
 /**
  * This annotation indicates the condition that must be validated from Spring to instantiate a Bean.
  *
@@ -29,4 +31,25 @@ public @interface Conditional {
      * @return String with the property key.
      */
     String property();
+
+    /**
+     * This indicates where Condition value is available.
+     * The default value is {@link ValueType#STRING}
+     *
+     * @return where the value is available.
+     */
+    ValueType type() default STRING;
+
+    public enum ValueType {
+
+        /**
+         * This value indicates that the value to check is embedded in application.property.
+         */
+        PROPERTY,
+
+        /**
+         * This value indicates that the value to check is provided directly to annotation.
+         */
+        STRING
+    }
 }
