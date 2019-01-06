@@ -1,4 +1,4 @@
-package com.darkestapp.spring.condition;
+package com.darkestapp.spring.condition.exception;
 
 /**
  * Created by Manuel Perez P. (darkpriestrelative@gmail.com) on 06/01/19.

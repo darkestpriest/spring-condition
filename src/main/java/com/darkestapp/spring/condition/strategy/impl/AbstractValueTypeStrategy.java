@@ -1,13 +1,9 @@
 package com.darkestapp.spring.condition.strategy.impl;
 
-import com.darkestapp.spring.condition.SpringConditionException;
 import com.darkestapp.spring.condition.strategy.ValueTypeStrategy;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
-import java.util.Map;
-import java.util.Optional;
-
-import static java.util.Optional.ofNullable;
+import static com.darkestapp.spring.condition.utils.AnnotationAttributeUtil.getConditionalValue;
 
 /**
  * Helps to obtain values from specified properties values.
@@ -20,25 +16,12 @@ abstract class AbstractValueTypeStrategy implements ValueTypeStrategy {
 
     private final AnnotatedTypeMetadata annotatedMetadata;
 
-    public AbstractValueTypeStrategy(AnnotatedTypeMetadata annotatedMetadata) {
+    AbstractValueTypeStrategy(AnnotatedTypeMetadata annotatedMetadata) {
         this.annotatedMetadata = annotatedMetadata;
     }
 
-    Optional getValue(Map<String, Object> attributes) {
-        return ofNullable(attributes.get(VALUE_PARAMETER_NAME));
-    }
-
-
     @Override
     public String getValue() {
-        Optional value = getValue(getAttributes(annotatedMetadata));
-        if(value.isPresent()) {
-            return value.get().toString();
-        }
-        throw handleNullValue();
-    }
-
-    private SpringConditionException handleNullValue() {
-        return new SpringConditionException("Conditional value cannot be null");
+        return getConditionalValue(annotatedMetadata, VALUE_PARAMETER_NAME);
     }
 }
